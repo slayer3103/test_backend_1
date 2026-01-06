@@ -1,0 +1,12 @@
+{
+  "name": "3_project",
+  "version": "1.0.0",
+  "description": "this i a backend for a project ",
+  "license": "ISC",
+  "author": "saurabh",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
