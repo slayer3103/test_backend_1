@@ -1,13 +1,11 @@
 import dotenv from 'dotenv'
-dotenv.config({path: `./env`})
+dotenv.config({ path: `./env` })
 console.log(dotenv.config());
 
-
-import mongoose from "mongoose";
-import {DB_NAME} from './constants.js'
-import express from 'express'
+import { app } from './app.js'
 import connectDB from './db/index.js'
-const app = express()
+
+
 
 
 //approach 1 - where we put everything in index.js so that db connsection and server runs at the start of the application 
@@ -32,3 +30,21 @@ const app = express()
 
 //approach 2
 connectDB()
+    .then(() => {
+        app.on('error', (error) => {    
+            console.error(`problem with connection: ${error}`)
+            throw error
+        })
+        app.listen(process.env.PORT || 3000, () => {
+            console.log(`SERVER IS RUNNING AT  PORT : ${process.env.PORT}`);
+
+        })
+
+    })
+    .catch((err) => (
+        console.log(`mongoDB connection failed : ${err}`)
+    ))
+    .finally(() => (
+        console.log(`executed express app`)
+
+    ))
