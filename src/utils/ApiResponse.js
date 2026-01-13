@@ -4,9 +4,11 @@ class ApiResponse extends Response {
         message = 'success',
         statusCode
     ) {
-        this.data=data,
-        this.message =message,
-        this.success=true,
-        this.statusCode=statusCode<400
+        this.data = data,
+            this.message = message,
+            this.success = true,
+            this.statusCode = statusCode < 400
     }
 }
+
+export { ApiResponse }
