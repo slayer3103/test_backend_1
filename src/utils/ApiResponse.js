@@ -4,6 +4,7 @@ class ApiResponse extends Response {
         message = 'success',
         statusCode
     ) {
+        super(message),
         this.data = data,
             this.message = message,
             this.success = true,

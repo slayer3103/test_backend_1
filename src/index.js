@@ -36,13 +36,10 @@ connectDB()
             throw error
         })
         app.listen(process.env.PORT || 3000, () => {
-            console.log(`SERVER IS RUNNING AT  PORT : ${process.env.PORT}`)
+            console.log(`SERVER IS RUNNING AT PORT : ${process.env.PORT}`)
         })
 
     })
     .catch((err) => (
         console.log(`mongoDB connection failed : ${err}`)
-    ))
-    .finally(() => (
-        console.log(`executed express app`)
     ))

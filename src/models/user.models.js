@@ -33,8 +33,7 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
     coverImage: {
-        type: String,
-        required: true
+        type: String
     },
     watchHistory: [
         {
@@ -43,8 +42,7 @@ const UserSchema = new mongoose.Schema({
         }
     ],
     refreshToken: {
-        type: String,
-        required: true
+        type: String
     }
 }, {
     timestamps: true
@@ -52,10 +50,10 @@ const UserSchema = new mongoose.Schema({
 UserSchema.pre('save', async function (next) {
     if (this.isModified('password')) {
         this.password = await bcrypt.hash(this.password, 10)
-        next()
+        next
     }
     else {
-        next()
+        next
     }
 })
 UserSchema.methods.isPasswordCorrect = async function (password) {
