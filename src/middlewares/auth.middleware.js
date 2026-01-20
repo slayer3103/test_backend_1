@@ -1,7 +1,7 @@
-import { ApiError } from "../utils/ApiError";
-import { asyncHandler } from "../utils/asyncHandler";
+import { ApiError } from "../utils/ApiError.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from 'jsonwebtoken'
-import { User } from "../models/user.models";
+import { User } from "../models/user.models.js";
 
 export const verifyJWT = asyncHandler(async (req, _, next) => {
     try {
@@ -12,7 +12,7 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
         }
         //then verifying the token with token secret & finding user in database
         const decodedUser = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
-        const user = User.findById(decodedUser._id).select("-password -refreshToken")
+        const user = User.findById(decodedUser?._id).select("-password -refreshToken")
         if (!user) {
             // TODO: need to add frontend later
             throw new ApiError(401, 'Invalid token')
