@@ -47,4 +47,25 @@ const uploadOnCloudinary = async (localpath) => {
     }
 }
 
-export { uploadOnCloudinary }
+const deleteFromCloudinary = async (url) => {
+    try {
+        if (!url) return null
+        // Extract public_id from URL
+        // Matches pattern: .../upload/(optional version v123/)(public_id).(extension)
+        const regex = /\/upload\/(?:v\d+\/)?(.+)\.[^.]+$/;
+        const match = url.match(regex);
+        const publicId = match ? match[1] : null;
+
+        if (!publicId) {
+            console.log("Could not extract public_id from url", url);
+            return null;
+        }
+        const response = await cloudinary.uploader.destroy(publicId)
+        console.log("File deleted from cloudinary", response);
+        return response
+    } catch (error) {
+        console.error("Error deleting from cloudinary:", error);
+        return null
+    }
+}
+export { uploadOnCloudinary, deleteFromCloudinary }

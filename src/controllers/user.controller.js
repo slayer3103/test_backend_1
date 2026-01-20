@@ -1,7 +1,7 @@
 import { asyncHandler } from '../utils/asyncHandler.js'
 import { ApiError } from '../utils/ApiError.js'
 import { User } from '../models/user.models.js'
-import { uploadOnCloudinary } from '../utils/coludinary.js'
+import { deleteFromCloudinary, uploadOnCloudinary } from '../utils/coludinary.js'
 import { ApiResponse } from '../utils/ApiResponse.js'
 import jwt from 'jsonwebtoken'
 
@@ -287,6 +287,8 @@ const updateAvatar = asyncHandler(async (req, res) => {
         if (!avatar.url) {
             throw new ApiError(400, "error while uploading the avatar")
         }
+        const oldAvatarURL = await User.findById(req.user?._id).avatar
+        await deleteFromCloudinary(oldAvatarURL)
         const user = await User.findByIdAndUpdate(
             req.user?._id,
             {
@@ -316,10 +318,12 @@ const updatedCoverImage = asyncHandler(async (req, res) => {
         throw new ApiError(404, "connot find the coverimage file locally")
     }
     try {
-        const coverImage = await uploadOnCloudinary(coverImagePath)
+        const coverImage = await uploadOnCloudinary(coverLocalImagePath)
         if (!coverImage.url) {
             throw new ApiError(401, "failed to upload image on the cloudinary server")
         }
+        const oldCoverImagePath = await User.findById(req.user?._id).coverImage
+        await deleteFromCloudinary(oldCoverImagePath)
         const user = await User.findByIdAndUpdate(
             req.user?._id,
             {
